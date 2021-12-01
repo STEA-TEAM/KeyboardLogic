@@ -6,7 +6,7 @@
 
 /*Key Binding, just for matrix setting. Binding setting in */
 /* None-Key Place filled with 0xFFFF*/
-uint16_t Key_Bind[SCAN_OUTPUT_NUM * SCAN_INPUT_NUM] = {
+uint16_t Key_Bind[KEY_BIND_NUMBER] = {
         KEYBOARD_D, KEYBOARD_D, KEYBOARD_D, KEYBOARD_D,
         KEYBOARD_F, KEYBOARD_F, KEYBOARD_F, KEYBOARD_F,
         KEYBOARD_J, KEYBOARD_J, KEYBOARD_J, KEYBOARD_J,

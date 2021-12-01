@@ -11,11 +11,6 @@ if (${DEBUG})
     add_compile_definitions(DEBUG)
 endif ()
 
-# Keyboard configs
-
-add_compile_definitions(SCAN_INPUT_NUM=4)
-add_compile_definitions(SCAN_OUTPUT_NUM=4)
-
 # RGB led configs
 set(ENABLE_WS2812_DRIVER ON)
 set(ENABLE_KEY_LED ON)

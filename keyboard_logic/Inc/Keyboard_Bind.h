@@ -7,6 +7,8 @@
 
 #include <stdint.h>
 
-extern uint16_t Key_Bind[SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
+#define KEY_BIND_NUMBER 16
+
+extern uint16_t Key_Bind[KEY_BIND_NUMBER];
 
 #endif //MATRIXKEYBOARD_KEYBOARD_BIND_H
