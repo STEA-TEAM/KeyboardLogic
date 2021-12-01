@@ -7,13 +7,8 @@
   * @retval int
   */
 int main(void) {
-    Keyboard_Init();
     while (1) {
-        uint8_t *detected_key;
-        uint16_t *all_code_list;
-
         Keyboard_Logic_Loop();
-
         usleep(1);
     }
 }

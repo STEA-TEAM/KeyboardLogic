@@ -11,25 +11,29 @@
 #include "Keyboard_Physical_Detect.h"
 #include "Keyboard_Keycode_Proccess.h"
 #include "Keyboard_Report_Send.h"
+
+#ifdef IS_STM32
 //include hardware drivers
 #include "USB_Send.h"
 #include "Keyboard_WS2812.h"
 #include "WS2812_RGB.h"
 #include "matrix_keyboard.h"
-
+#endif
 
 void Keyboard_Init() {
+#ifdef IS_STM32
     //WS2812_Init();
     Matrix_Keyboard_Init();
     USB_Keyboard_Send_Init();
     Key_Process_Init();
+#endif
 }
 
 void Keyboard_Begin_Loop() {
 
 }
 
-uint8_t *Keyboard_Phycial_Detect(uint8_t *Key_Pressed_Index) {
+uint8_t *Keyboard_Physical_Detect(uint8_t *Key_Pressed_Index) {
     /*
      * You can add any kinds of physical keys
      * Just append Key Pressed Index and change matrix_conf.c/.h for keycode binding
@@ -39,7 +43,21 @@ uint8_t *Keyboard_Phycial_Detect(uint8_t *Key_Pressed_Index) {
      */
     //Key_Pressed_Index init as size 1 array
     Key_Pressed_Index = Key_Pressed_Index_Init();
+#ifdef IS_STM32
     Key_Pressed_Index = Matrix_Keyboard_Read_Keys(Key_Pressed_Index);
+#else
+    uint8_t testKeyList[8];
+    testKeyList[0] = 0;
+    testKeyList[1] = 2;
+    testKeyList[2] = 4;
+    testKeyList[3] = 6;
+    testKeyList[4] = 8;
+    testKeyList[5] = 10;
+    testKeyList[6] = 12;
+    testKeyList[7] = 14;
+
+    Key_Pressed_Index = MergeUint8Array(testKeyList, Key_Pressed_Index);
+#endif
     return Key_Pressed_Index;
 }
 
@@ -62,18 +80,26 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
     //decode filter array to each kind of keycode header index
     //report_head[6] is {5,kbd,ms,cc,sc,rhid}
 
+#ifdef IS_STM32
     uint8_t *report_head = NULL;
     report_head = decode_Uint16reportPack(filter_ret);
     //handle Keyboard Report;
     uint8_t *KeyboardReport = NULL;
+
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
 
     USB_HID_SendReport(KeyboardReport);
 
     free(KeyboardReport);
     free(report_head);
+#else
+    printf("all_code_list: ");
+    for (uint16_t i = 1; i <= all_code_list[0]; i++) {
+        printf("%02X ", all_code_list[i]);
+    }
+    printf("\n");
+#endif
     free(filter_ret);
-
 }
 
 void Keyboard_End_Loop() {
@@ -87,7 +113,7 @@ void Keyboard_Logic_Loop() {
 
     Keyboard_Begin_Loop();
 
-    Key_Pressed_Index = Keyboard_Phycial_Detect(Key_Pressed_Index);
+    Key_Pressed_Index = Keyboard_Physical_Detect(Key_Pressed_Index);
 
     All_Code = Keyboard_Keycode_Process(Key_Pressed_Index, All_Code);
 
