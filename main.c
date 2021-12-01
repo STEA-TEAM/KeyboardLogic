@@ -12,7 +12,6 @@ int main(void) {
         uint8_t *detected_key;
         uint16_t *all_code_list;
 
-        Keyboard_Init();
         Keyboard_Logic_Loop();
 
         usleep(1);

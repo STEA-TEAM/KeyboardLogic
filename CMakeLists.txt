@@ -97,19 +97,16 @@ else ()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=${SANITIZER} -g")
     endif ()
 
-    aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Src CDRV_SRC)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Src KBDL_SRC)
     aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Src UNIFC_SRC)
 
     add_executable(${PROJECT_NAME} main.c)
 
     target_include_directories(${PROJECT_NAME} PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Inc
             ${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Inc
             ${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Inc)
 
     target_sources(${PROJECT_NAME} PRIVATE
-            ${CDRV_SRC}
             ${KBDL_SRC}
             ${UNIFC_SRC})
 endif ()
