@@ -26,11 +26,8 @@
 
 
 void Key_Process_Init();
-void All_Code_List_Init(uint16_t* null_all_code_list_ptr);
-__unused void Macro_Process(const uint8_t* Key_Pressed_Index);
-uint8_t if_already_has_code(uint16_t code, const uint16_t* code_list);
-uint16_t* Macro_Convert(uint16_t macro_code);
-uint16_t* Key_Process(const uint8_t* Key_Pressed_Index,uint16_t* all_code_list);
-
+uint16_t* All_Code_List_Init();
+uint16_t* KeyPress_to_KeyCode(const uint8_t* Key_Pressed_Index, uint16_t* all_code_list);
+uint16_t* KeyCode_Remove_Redundent(uint16_t* all_code_list);
 
 #endif //MATRIXKEYBOARD_KEY_PROCESS_H

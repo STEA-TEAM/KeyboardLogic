@@ -11,7 +11,7 @@
 
 uint8_t in_range(uint16_t target, uint16_t minimum, uint16_t maximum);
 uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, uint8_t begin_find_index);
-uint8_t if_already_has_code(uint16_t code, const uint16_t* code_list);
+uint8_t has_uint16(uint16_t code, const uint16_t* code_list, uint16_t begin, uint16_t end);
 
 uint8_t key_status_comp(const uint8_t *cmp_key_status_now, const uint8_t *cmp_Keyboard_Last_Key_Status);
 
