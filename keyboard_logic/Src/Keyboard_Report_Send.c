@@ -7,14 +7,12 @@
 
 //include standard library
 #include <stdlib.h>
-#include <memory.h>
 //include universal library
 #include "universal_func.h"
 //include functional library
 #include "Keyboard_Report_Send.h"
 #include "Keyboard_Keycode_Proccess.h"
 //include driver library
-#include "usbd_custom_hid_if.h"
 
 
 

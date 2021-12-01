@@ -75,8 +75,7 @@ uint8_t* Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index){
     for (uint8_t comp_bit = 0; comp_bit < SCAN_INPUT_NUM * SCAN_OUTPUT_NUM; comp_bit++) {
         //both pressed in now_frame and last_frame
         Key_Pressed_Count += Key_Status[now_frame][comp_bit] && Key_Status[last_frame][comp_bit];
-        Key_Pressed[comp_bit] = Key_Status[now_frame][comp_bit] && Key_Status[last_frame][comp_bit];
-        Key_Pressed_Count += Key_Pressed[comp_bit];
+        Key_Pressed_Count += Key_Status[now_frame][comp_bit] && Key_Status[last_frame][comp_bit];
     }
     //calloc space for Inner_Key_Pressed_Index
     uint8_t* Inner_Key_Pressed_Index;

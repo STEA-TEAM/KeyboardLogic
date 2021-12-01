@@ -128,71 +128,10 @@ int main(void) {
     /* USER CODE BEGIN WHILE */
     while (1) {
         /* USER CODE END WHILE */
-//8084 53.5 8085 53 8108 53 8109 52.5 8132 52.5 8133 52
+
         /* USER CODE BEGIN 3 */
-        uint8_t *detected_key = NULL;
-        uint16_t *all_code_list = NULL;
-
-//        Keyboard_Begin_Loop();
-//        detected_key = Keyboard_detect_key();
-//        all_code_list = Keyboard_Keycode_Process(detected_key);
-//        Keyboard_Report_Send(all_code_list);
-//        Keyboard_End_Loop();
-//        HAL_Delay(200);
-
-//          uint16_t c = 500;
-//          uint8_t sd[c];
-//          for (uint16_t i = 0;i < c; i++){
-//              sd[i] = WS2812_H;
-//          }
-//          HAL_SPI_Transmit_DMA(&hspi2, sd, c);
-//          HAL_Delay(100);
-//        for (uint16_t i = 0;i < c; i++){
-//            sd[i] = WS2812_L;
-//        }
-//        HAL_SPI_Transmit_DMA(&hspi2, sd, c);
-//        HAL_Delay(100);
-
-//
-        WS2812_Position led_addr = {0, 0};
-        for (uint8_t i = 0; i < 12; i++) {
-            led_addr.led_addr = i;
-            WS2812_SetColor(&led_addr, 0x10, 0x10, 0x10);
-            //SerialPrintUint8(0xCC);
-            //SerialPrintUint8Array(WS2812_RGB_StatusPtrList[0],0,36);
-            WS2812_Update();
-            HAL_Delay(500);
-        }
-        for (uint8_t i = 0; i < 12; i++) {
-            led_addr.led_addr = i;
-            WS2812_SetColor(&led_addr, 0x0, 0x0, 0x0);
-            WS2812_Update();
-            HAL_Delay(500);
-        }
-        //HAL_Delay(1000);
-
-
-/*	  Matrix_Keyboard_Scan_Keys();
-	  Matrix_Keyboard_Comp_Keys();
-	  USB_HID_Send_Standard_Keys();
-      WS2812_ResetAll();
-      uint8_t us[8] = {0xFF};
-      us[0] = 0xFF;
-      for (uint8_t i = 0; i < Key_Pressed_Count; i++){
-          us[1] = i;
-          us[2] = Key_Pressed_Count;
-          us[3] = Key_Pressed_Index[i];
-          us[4] = Key_WS2812_Bind[Key_Pressed_Index[i]] . strip_index;
-          us[5] = Key_WS2812_Bind[Key_Pressed_Index[i]] . led_addr;
-          us[6] = WS2812_ValidPosition(&Key_WS2812_Bind[Key_Pressed_Index[i]]);
-          //HAL_UART_Transmit(&huart1,us,8,0xFFFF);
-          if (WS2812_ValidPosition(&Key_WS2812_Bind[Key_Pressed_Index[i]])){
-              WS2812_SetColor(&Key_WS2812_Bind[Key_Pressed_Index[i]],0xFF,0xFF,0xFF);
-          }
-      }
-      WS2812_Update();
-	  //HAL_UART_Transmit(&huart1,"STM32 init\n",strlen("STM32 init\n"),0xFFFF);
-	  HAL_Delay(1);*/
+        Keyboard_Logic_Loop();
+        HAL_Delay(500);
     }
     /* USER CODE END 3 */
 }

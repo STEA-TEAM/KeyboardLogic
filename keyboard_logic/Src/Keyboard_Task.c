@@ -19,7 +19,7 @@
 
 
 void Keyboard_Init() {
-    WS2812_Init();
+    //WS2812_Init();
     Matrix_Keyboard_Init();
     USB_Keyboard_Send_Init();
     Key_Process_Init();
