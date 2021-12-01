@@ -21,13 +21,4 @@ GPIO_Package Scan_OutputGPIO[SCAN_OUTPUT_NUM] = {
         {GPIOB,GPIO_PIN_10}
 };
 
-/*Key Binding, just for matrix setting. Binding setting in */
-/* None-Key Place filled with 0xFFFF*/
-uint16_t Key_Bind[SCAN_OUTPUT_NUM*SCAN_INPUT_NUM] = {
-        KEYBOARD_D, KEYBOARD_D, KEYBOARD_D, KEYBOARD_D,
-        KEYBOARD_F, KEYBOARD_F, KEYBOARD_F, KEYBOARD_F,
-        KEYBOARD_J, KEYBOARD_J, KEYBOARD_J, KEYBOARD_J,
-        KEYBOARD_K, KEYBOARD_K, KEYBOARD_K, KEYBOARD_K
-};
-
 

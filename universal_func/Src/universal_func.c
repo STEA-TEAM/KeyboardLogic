@@ -2,7 +2,6 @@
 // Created by CafuuChino on 2021/11/30.
 //
 
-#include <main.h>
 #include <malloc.h>
 #include <memory.h>
 #include "universal_func.h"
@@ -28,7 +27,8 @@ uint8_t has_uint16(uint16_t code, const uint16_t* code_list, uint16_t begin, uin
     return 0x00;
 }
 
-void SerialPrintUint8(uint8_t data){
+// TODO: Move these functions to STM32 specific folder
+/*void SerialPrintUint8(uint8_t data){
     uint8_t rp[1] = {data};
     HAL_UART_Transmit(&huart1,rp,1,0xFFFF);
 }
@@ -54,7 +54,7 @@ void SerialPrintUint16Array(const uint16_t* array,uint8_t begin_index,uint16_t s
         hlb[1] = (uint8_t)array[begin_index+i];
         HAL_UART_Transmit(&huart1,hlb,2,0xffff);
     }
-}
+}*/
 
 uint8_t* MergeUint8Array(uint8_t* source, uint8_t* target){
     uint8_t* new = NULL;
