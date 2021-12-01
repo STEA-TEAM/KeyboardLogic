@@ -131,7 +131,7 @@ int main(void) {
 
         /* USER CODE BEGIN 3 */
         Keyboard_Logic_Loop();
-        HAL_Delay(500);
+        HAL_Delay(1000);
     }
     /* USER CODE END 3 */
 }

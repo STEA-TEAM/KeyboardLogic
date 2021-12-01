@@ -11,7 +11,7 @@ void Keyboard_Init();
 
 void Keyboard_Begin_Loop();
 
-uint8_t *Keyboard_detect_key(uint8_t *Key_Pressed_Index);
+uint8_t *Keyboard_Phycial_Detect(uint8_t *Key_Pressed_Index);
 
 uint16_t *Keyboard_Keycode_Process(
         uint8_t *Key_Pressed_Index,

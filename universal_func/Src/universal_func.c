@@ -20,9 +20,9 @@ uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, ui
     return 0x00;
 }
 
-uint8_t if_already_has_code(uint16_t code, const uint16_t* code_list){
+uint8_t has_uint16(uint16_t code, const uint16_t* code_list, uint16_t begin, uint16_t end){
     //size of code_list is in code_list[0], so i begin with 1
-    for(uint8_t i = 1; i < code_list[0]; i++){
+    for(uint16_t i = begin; i < end; i++){
         if (code_list[i] == code) return 0x01;
     }
     return 0x00;
@@ -58,13 +58,24 @@ void SerialPrintUint16Array(const uint16_t* array,uint8_t begin_index,uint16_t s
 
 uint8_t* MergeUint8Array(uint8_t* source, uint8_t* target){
     uint8_t* new = NULL;
-    new = (uint8_t*)malloc(sizeof(uint8_t) * (1+source[0]+target[0]));
-    new[0] = source[0] + target[0];
-    memcpy(new+1, target, target[0]);
-    memcpy(new+2+target[0], source, source[0]);
-    free(source);
-    free(target);
-    return new;
+    if (!source[0]){
+        free(source);
+        return target;
+    }
+    else if((!target[0]) && source[0]){
+        free(target);
+        return source;
+    }
+    else{
+        new = (uint8_t*)malloc(sizeof(uint8_t) * (1+source[0]+target[0]));
+        new[0] = source[0] + target[0];
+        memcpy(new+1, target, target[0]);
+        memcpy(new+2+target[0], source, source[0]);
+        free(source);
+        free(target);
+        return new;
+    }
+
 }
 
 uint8_t* MergeLongUint8Array(uint8_t* source, uint16_t source_size,
@@ -80,13 +91,24 @@ uint8_t* MergeLongUint8Array(uint8_t* source, uint16_t source_size,
 
 uint16_t* MergeUint16Array(uint16_t* source, uint16_t* target){
     uint16_t* new = NULL;
-    new = (uint16_t*)malloc(sizeof(uint16_t) * (1+source[0]+target[0]));
-    new[0] = source[0] + target[0];
-    memcpy(new+1, target, target[0]);
-    memcpy(new+2+target[0], source, source[0]);
-    free(source);
-    free(target);
-    return new;
+    if (!source[0]){
+        free(source);
+        return target;
+    }
+    else if((!target[0]) && source[0]){
+        free(target);
+        return source;
+    }
+    else{
+        new = (uint16_t*)malloc(sizeof(uint16_t) * (1+source[0]+target[0]));
+        new[0] = source[0] + target[0];
+        memcpy(new+1, target, target[0]);
+        memcpy(new+2+target[0], source, source[0]);
+        free(source);
+        free(target);
+        return new;
+    }
+
 }
 
 uint8_t* decode_Uint8reportPack(const uint8_t* reportPack){

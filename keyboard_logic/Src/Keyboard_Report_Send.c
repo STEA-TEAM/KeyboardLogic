@@ -16,7 +16,7 @@
 
 
 
-uint16_t* Keycode_Filter(uint16_t *all_code_list) {
+uint16_t* Keycode_Filter(const uint16_t *all_code_list) {
 
     uint16_t* ret;
 
@@ -43,6 +43,7 @@ uint16_t* Keycode_Filter(uint16_t *all_code_list) {
                     keycode_size[3] +
                     keycode_size[4];
 
+
     ret = (uint16_t*)calloc(sizeof(uint16_t), ret_size);
     //0s---s---s---s---s---
     //0 1 2+s1 3+s1+s2 4+s1+s2+s3 5+s1+s2+s3+s4
@@ -59,8 +60,6 @@ uint16_t* Keycode_Filter(uint16_t *all_code_list) {
     ret[ret_pt[2]] = keycode_size[2];
     ret[ret_pt[3]] = keycode_size[3];
     ret[ret_pt[4]] = keycode_size[4];
-
-
 
 
     uint8_t count[5] = {1, 1, 1, 1, 1};

@@ -38,10 +38,8 @@ uint8_t *Keyboard_Phycial_Detect(uint8_t *Key_Pressed_Index) {
      * Key index is the index you bind your keys in matrix_conf.c/.h
      */
     //Key_Pressed_Index init as size 1 array
-    Key_Pressed_Index_Init(Key_Pressed_Index);
-
+    Key_Pressed_Index = Key_Pressed_Index_Init();
     Key_Pressed_Index = Matrix_Keyboard_Read_Keys(Key_Pressed_Index);
-
     return Key_Pressed_Index;
 }
 
@@ -50,28 +48,29 @@ uint16_t *Keyboard_Keycode_Process(uint8_t *Key_Pressed_Index,
     //all_code_list is NULL
 
     //init all_code_list
-    All_Code_List_Init(all_code_list);
+    all_code_list = All_Code_List_Init();
     //handle Keyboard code in Key_Pressed_Index and add to all_code_list
-    all_code_list = Key_Process(Key_Pressed_Index, all_code_list);
+    all_code_list = KeyPress_to_KeyCode(Key_Pressed_Index, all_code_list);
+    all_code_list = KeyCode_Remove_Redundent(all_code_list);
     return all_code_list;
 }
 
 void Keyboard_Report_Send(uint16_t *all_code_list) {
 
     uint16_t *filter_ret = NULL;
-
     filter_ret = Keycode_Filter(all_code_list);
     //decode filter array to each kind of keycode header index
     //report_head[6] is {5,kbd,ms,cc,sc,rhid}
+
     uint8_t *report_head = NULL;
     report_head = decode_Uint16reportPack(filter_ret);
-
     //handle Keyboard Report;
     uint8_t *KeyboardReport = NULL;
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
-    USB_HID_SendReport(KeyboardReport);
-    free(KeyboardReport);
 
+    USB_HID_SendReport(KeyboardReport);
+
+    free(KeyboardReport);
     free(report_head);
     free(filter_ret);
 
@@ -91,6 +90,7 @@ void Keyboard_Logic_Loop() {
     Key_Pressed_Index = Keyboard_Phycial_Detect(Key_Pressed_Index);
 
     All_Code = Keyboard_Keycode_Process(Key_Pressed_Index, All_Code);
+
     free(Key_Pressed_Index);
 
     Keyboard_Report_Send(All_Code);

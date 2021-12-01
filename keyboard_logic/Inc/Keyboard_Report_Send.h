@@ -16,7 +16,7 @@
 
 
 
-uint16_t* Keycode_Filter(uint16_t* all_code_list);
+uint16_t* Keycode_Filter(const uint16_t* all_code_list);
 
 
 //
