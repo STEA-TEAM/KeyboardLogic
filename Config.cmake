@@ -1,5 +1,4 @@
 # Build configs
-set(IS_STM32 OF)
 set(DEBUG ON)
 set(SANITIZER leak) # Options: OFF, address, leak, thread, undefined, memory
 
