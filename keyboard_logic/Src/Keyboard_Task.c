@@ -29,7 +29,7 @@ void Keyboard_Begin_Loop() {
 
 }
 
-uint8_t* Keyboard_Phycial_Detect(uint8_t* Key_Pressed_Index) {
+uint8_t *Keyboard_Phycial_Detect(uint8_t *Key_Pressed_Index) {
     /*
      * You can add any kinds of physical keys
      * Just append Key Pressed Index and change matrix_conf.c/.h for keycode binding
@@ -45,30 +45,30 @@ uint8_t* Keyboard_Phycial_Detect(uint8_t* Key_Pressed_Index) {
     return Key_Pressed_Index;
 }
 
-uint16_t* Keyboard_Keycode_Process(uint8_t* Key_Pressed_Index,
-                                   uint16_t* all_code_list) {
+uint16_t *Keyboard_Keycode_Process(uint8_t *Key_Pressed_Index,
+                                   uint16_t *all_code_list) {
     //all_code_list is NULL
 
     //init all_code_list
     All_Code_List_Init(all_code_list);
     //handle Keyboard code in Key_Pressed_Index and add to all_code_list
-    all_code_list = Key_Process(Key_Pressed_Index,all_code_list);
+    all_code_list = Key_Process(Key_Pressed_Index, all_code_list);
     return all_code_list;
 }
 
 void Keyboard_Report_Send(uint16_t *all_code_list) {
 
-    uint16_t* filter_ret = NULL;
+    uint16_t *filter_ret = NULL;
 
     filter_ret = Keycode_Filter(all_code_list);
     //decode filter array to each kind of keycode header index
     //report_head[6] is {5,kbd,ms,cc,sc,rhid}
-    uint8_t* report_head = NULL;
+    uint8_t *report_head = NULL;
     report_head = decode_Uint16reportPack(filter_ret);
 
     //handle Keyboard Report;
     uint8_t *KeyboardReport = NULL;
-    KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret,report_head[1]);
+    KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
     USB_HID_SendReport(KeyboardReport);
     free(KeyboardReport);
 
@@ -82,9 +82,9 @@ void Keyboard_End_Loop() {
 }
 
 //Keyboard Logical Loop
-void Keyboard_Logic_Loop(){
-    uint8_t* Key_Pressed_Index = NULL;
-    uint16_t* All_Code = NULL;
+void Keyboard_Logic_Loop() {
+    uint8_t *Key_Pressed_Index = NULL;
+    uint16_t *All_Code = NULL;
 
     Keyboard_Begin_Loop();
 
