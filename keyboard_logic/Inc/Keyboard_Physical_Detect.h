@@ -5,7 +5,7 @@
 #ifndef KEYBOARDLOGIC_KEYBOARD_PHYSICAL_DETECT_H
 #define KEYBOARDLOGIC_KEYBOARD_PHYSICAL_DETECT_H
 
-#include "main.h"
+#include "stdint.h"
 
 uint8_t* Key_Pressed_Index_Init();
 

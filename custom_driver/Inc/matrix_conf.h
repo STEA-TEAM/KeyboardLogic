@@ -15,11 +15,7 @@ typedef struct GPIO_Package_def {
     uint16_t GPIO_Num;
 } GPIO_Package;
 
-#define SCAN_INPUT_NUM 4
-#define SCAN_OUTPUT_NUM 4
-
 extern GPIO_Package Scan_InputGPIO[SCAN_INPUT_NUM];
 extern GPIO_Package Scan_OutputGPIO[SCAN_OUTPUT_NUM];
-extern uint16_t Key_Bind[SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
 
 #endif /* MATRIX_CONF_H_ */
