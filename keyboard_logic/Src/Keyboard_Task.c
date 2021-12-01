@@ -67,7 +67,8 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
     //handle Keyboard Report;
     uint8_t *KeyboardReport = NULL;
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
-
+    SerialPrintUint8(0xAA);
+    SerialPrintUint8Array(KeyboardReport,0,9);
     USB_HID_SendReport(KeyboardReport);
 
     free(KeyboardReport);

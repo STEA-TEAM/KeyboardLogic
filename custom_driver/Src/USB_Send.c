@@ -13,6 +13,8 @@ void USB_HID_SendReport(uint8_t *HID_Report) {
         uint8_t total_report = HID_Report[pt];
         pt++;
         for (uint8_t i = 0; i < total_report; i++) {
+            SerialPrintUint8(0xCC);
+            SerialPrintUint8Array(HID_Report + pt + 1,0,HID_Report[pt]);
             USBD_CUSTOM_HID_SendReport_FS(HID_Report + pt + 1, HID_Report[pt]);
             pt += HID_Report[pt] + 1;
         }
@@ -110,6 +112,7 @@ uint8_t* USB_HID_Keyboard_Code_Process(const uint16_t* filter_ret, uint8_t head)
         Keyboard_Keycode[i] = (uint8_t)filter_ret[head+i];
     }
 
+
     uint8_t *ret;
     //handle assistant keys
     if (!key_status_comp(Keyboard_Keycode, Keyboard_Last_Key_Status)) {
@@ -200,12 +203,15 @@ uint8_t* USB_HID_Keyboard_Code_Process(const uint16_t* filter_ret, uint8_t head)
         Keyboard_Last_Key_Status = (uint8_t *) malloc(sizeof(uint8_t) * Keyboard_Keycode[0] + 1);
         memcpy(Keyboard_Last_Key_Status, Keyboard_Keycode, Keyboard_Keycode[0] + 1);
 
-        uint8_t send_mode = ((uint8_t)memcmp(Last_Keyboard_HID_Report,
+
+        uint8_t send_mode = ((memcmp(Last_Keyboard_HID_Report,
                                              Keyboard_HID_Report,
-                                             HID_DEFAULT_KEYBOARD_REPORT_SIZE) << 1)
-                            + (uint8_t)memcmp(LastEX_Keyboard1_HID_Report,
+                                             HID_DEFAULT_KEYBOARD_REPORT_SIZE) == 0) << 1)
+                            + ((uint8_t)memcmp(LastEX_Keyboard1_HID_Report,
                                               EX_Keyboard1_HID_Report,
-                                              HID_EX_KEYBOARD1_REPORT_SIZE);
+                                              HID_EX_KEYBOARD1_REPORT_SIZE) == 0);
+        SerialPrintUint8(0xDD);
+        SerialPrintUint8(send_mode);
         switch (send_mode) {
             case 0:{
                 return NULL;
