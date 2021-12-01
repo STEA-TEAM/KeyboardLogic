@@ -1,7 +1,7 @@
 # Build configs
-set(IS_STM32 ON)
-set(DEBUG OFF)
-set(SANITIZER OFF) # Options: OFF, address, leak, thread, undefined, memory
+set(IS_STM32 OF)
+set(DEBUG ON)
+set(SANITIZER leak) # Options: OFF, address, leak, thread, undefined, memory
 
 if (${IS_STM32})
     add_compile_definitions(IS_STM32)
