@@ -10,17 +10,6 @@
 
 #include <stdint-gcc.h>
 
-
-
-
-
-
-
-uint16_t* Keycode_Filter(const uint16_t* all_code_list);
-
-
-//
-
-//Key_Pressed, Key Pressed_Count
+uint16_t *Keycode_Filter(const uint16_t *all_code_list);
 
 #endif /* USB_KEYBOARD_SEND_H_ */

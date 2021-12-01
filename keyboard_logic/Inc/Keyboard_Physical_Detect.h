@@ -7,6 +7,6 @@
 
 #include "stdint.h"
 
-uint8_t* Key_Pressed_Index_Init();
+uint8_t *Key_Pressed_Index_Init();
 
 #endif //KEYBOARDLOGIC_KEYBOARD_PHYSICAL_DETECT_H

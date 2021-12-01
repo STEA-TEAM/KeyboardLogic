@@ -18,6 +18,7 @@
 #include "Keyboard_WS2812.h"
 #include "WS2812_RGB.h"
 #include "matrix_keyboard.h"
+
 #endif
 
 void Keyboard_Init() {
@@ -88,7 +89,7 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
 
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
     SerialPrintUint8(0xAA);
-    SerialPrintUint8Array(KeyboardReport,0,9);
+    SerialPrintUint8Array(KeyboardReport, 0, 9);
     USB_HID_SendReport(KeyboardReport);
 
     free(KeyboardReport);

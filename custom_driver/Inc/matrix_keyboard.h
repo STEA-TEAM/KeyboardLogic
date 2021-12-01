@@ -13,9 +13,8 @@
 
 #define JITTER_SCAN_FRAME 1U //do not set a large number!Jitter Time is in FRAME Unit, Per Frame Time is SCAN_INVERVAL(ms)
 
-
-extern uint8_t Key_Status[JITTER_SCAN_FRAME+1][SCAN_OUTPUT_NUM*SCAN_INPUT_NUM];
-extern uint8_t Key_Pressed[SCAN_OUTPUT_NUM*SCAN_INPUT_NUM];
+extern uint8_t Key_Status[JITTER_SCAN_FRAME + 1][SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
+extern uint8_t Key_Pressed[SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
 
 extern uint8_t last_frame;
 extern uint8_t now_frame;
@@ -23,9 +22,9 @@ extern uint8_t now_frame;
 void Matrix_Keyboard_Init();
 
 void Matrix_Keyboard_Scan_Keys();
+
 uint8_t *Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index);
+
 uint8_t *Matrix_Keyboard_Read_Keys(uint8_t *Key_Pressed_Index);
-
-
 
 #endif /* INC_MATRIX_KEYBOARD_H_ */

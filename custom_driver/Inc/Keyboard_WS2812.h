@@ -11,10 +11,7 @@
 #include "WS2812_RGB.h"
 #include "matrix_conf.h"
 
-#if KEY_WS2812_RGB
 extern WS2812_Position Key_WS2812_Bind[SCAN_OUTPUT_NUM*SCAN_INPUT_NUM];
 void KeyLight(const uint8_t* Key_Pressed_Index);
-#endif
-
 
 #endif /* KEYBOARD_WS2812_H_ */

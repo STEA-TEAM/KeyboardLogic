@@ -42,7 +42,6 @@ void Matrix_Keyboard_Init() {
 }
 
 
-
 void Matrix_Keyboard_Scan_Keys() {
     Key_Pressed_Count = 0;
     now_frame = last_frame;
@@ -68,7 +67,7 @@ void Matrix_Keyboard_Scan_Keys() {
     }
 }
 
-uint8_t* Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index){
+uint8_t *Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index) {
     //for removing JITTER by compare now_frame & last_frame
     Key_Pressed_Count = 0;
     //count Pressed Key for calloc size
@@ -77,8 +76,8 @@ uint8_t* Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index){
         Key_Pressed_Count += Key_Status[now_frame][comp_bit] && Key_Status[last_frame][comp_bit];
     }
     //calloc space for Inner_Key_Pressed_Index
-    uint8_t* Inner_Key_Pressed_Index;
-    Inner_Key_Pressed_Index = (uint8_t *) malloc(sizeof(uint8_t)* (Key_Pressed_Count + 1));
+    uint8_t *Inner_Key_Pressed_Index;
+    Inner_Key_Pressed_Index = (uint8_t *) malloc(sizeof(uint8_t) * (Key_Pressed_Count + 1));
     Inner_Key_Pressed_Index[0] = Key_Pressed_Count;
     //add pressed key to Key_Pressed_index
     uint8_t ct = 1;
@@ -88,11 +87,11 @@ uint8_t* Matrix_Keyboard_Comp_Keys(uint8_t *Key_Pressed_Index){
             ct++;
         }
     }
-    Key_Pressed_Index = MergeUint8Array(Inner_Key_Pressed_Index,Key_Pressed_Index);
+    Key_Pressed_Index = MergeUint8Array(Inner_Key_Pressed_Index, Key_Pressed_Index);
     return Key_Pressed_Index;
 }
 
-uint8_t *Matrix_Keyboard_Read_Keys(uint8_t *Key_Pressed_Index){
+uint8_t *Matrix_Keyboard_Read_Keys(uint8_t *Key_Pressed_Index) {
     Matrix_Keyboard_Scan_Keys();
     Key_Pressed_Index = Matrix_Keyboard_Comp_Keys(Key_Pressed_Index);
     return Key_Pressed_Index;

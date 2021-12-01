@@ -31,11 +31,13 @@
 //#define HID_EX_KEYBOARD3_USAGE_MINIMUM 0x68
 //#define HID_EX_KEYBOARD3_USAGE_MAXIMUM 0x9F
 
-void USB_HID_SendReport(uint8_t* report);
-uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t* filter_ret, uint8_t head);
-void USB_Keyboard_Send_Init();
-void USB_Keyboard_Send_Loop_Init();
+void USB_HID_SendReport(uint8_t *report);
 
+uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head);
+
+void USB_Keyboard_Send_Init();
+
+void USB_Keyboard_Send_Loop_Init();
 
 
 #endif //KEYBOARDLOGIC_USB_SEND_H

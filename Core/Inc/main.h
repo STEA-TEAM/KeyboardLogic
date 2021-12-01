@@ -56,10 +56,14 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 void SerialPrintUint8(uint8_t data);
+
 void SerialPrintUint16(uint16_t data);
-void SerialPrintStr(const char* str);
-void SerialPrintUint8Array(const uint8_t* array,uint8_t begin_index,uint16_t size);
-void SerialPrintUint16Array(const uint16_t* array,uint8_t begin_index,uint16_t size);
+
+void SerialPrintStr(const char *str);
+
+void SerialPrintUint8Array(const uint8_t *array, uint8_t begin_index, uint16_t size);
+
+void SerialPrintUint16Array(const uint16_t *array, uint8_t begin_index, uint16_t size);
 
 /* USER CODE END EFP */
 
