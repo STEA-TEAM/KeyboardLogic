@@ -87,7 +87,7 @@ if (${IS_STM32})
     Building ${BIN_FILE}")
 else ()
     # project settings
-    project(MatrixKeyboard C CXX)
+    project(Keyboard_Logic C CXX)
     set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_C_STANDARD 11)
 
