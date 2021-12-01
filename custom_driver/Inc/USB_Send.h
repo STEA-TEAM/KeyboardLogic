@@ -1,0 +1,41 @@
+//
+// Created by CafuuChino on 2021/12/1.
+//
+
+#ifndef KEYBOARDLOGIC_USB_SEND_H
+#define KEYBOARDLOGIC_USB_SEND_H
+
+#include "main.h"
+
+#define HID_DEFAULT_KEYBOARD_REPORT_ID 1
+#define HID_DEFAULT_KEYBOARD_REPORT_SIZE 8
+//#define HID_DEFAULT_KEYBOARD_MAX_KEY 6
+
+//#define HID_MOUSE_REPORT_ID 3
+//#define HID_MOUSE_REPORT_SIZE 8
+
+#define HID_EX_KEYBOARD1_REPORT_ID  5
+//#define HID_EX_KEYBOARD2_REPORT_ID  6
+//#define HID_EX_KEYBOARD3_REPORT_ID  7
+
+#define HID_EX_KEYBOARD1_REPORT_SIZE  15
+//#define HID_EX_KEYBOARD2_REPORT_SIZE  8
+//#define HID_EX_KEYBOARD3_REPORT_SIZE  8
+
+//#define HID_EX_KEYBOARD1_USAGE_MINIMUM 0x04
+//#define HID_EX_KEYBOARD1_USAGE_MAXIMUM 0x73
+
+//#define HID_EX_KEYBOARD2_USAGE_MINIMUM 0x30
+//#define HID_EX_KEYBOARD2_USAGE_MAXIMUM 0x67
+
+//#define HID_EX_KEYBOARD3_USAGE_MINIMUM 0x68
+//#define HID_EX_KEYBOARD3_USAGE_MAXIMUM 0x9F
+
+void USB_HID_SendReport(uint8_t* report);
+uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t* filter_ret, uint8_t head);
+void USB_Keyboard_Send_Init();
+void USB_Keyboard_Send_Loop_Init();
+
+
+
+#endif //KEYBOARDLOGIC_USB_SEND_H
