@@ -47,15 +47,16 @@ uint8_t *Keyboard_Physical_Detect(uint8_t *Key_Pressed_Index) {
 #ifdef IS_STM32
     Key_Pressed_Index = Matrix_Keyboard_Read_Keys(Key_Pressed_Index);
 #else
-    uint8_t testKeyList[8];
-    testKeyList[0] = 0;
-    testKeyList[1] = 2;
-    testKeyList[2] = 4;
-    testKeyList[3] = 6;
-    testKeyList[4] = 8;
-    testKeyList[5] = 10;
-    testKeyList[6] = 12;
-    testKeyList[7] = 14;
+    uint8_t *testKeyList = (uint8_t *) malloc(sizeof(uint8_t) * 9);
+    testKeyList[0] = 8;
+    testKeyList[1] = 0;
+    testKeyList[2] = 2;
+    testKeyList[3] = 4;
+    testKeyList[4] = 6;
+    testKeyList[5] = 8;
+    testKeyList[6] = 10;
+    testKeyList[7] = 12;
+    testKeyList[8] = 14;
 
     Key_Pressed_Index = MergeUint8Array(testKeyList, Key_Pressed_Index);
 #endif
