@@ -17,12 +17,7 @@ uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uin
 
 uint8_t key_status_comp(const uint8_t *cmp_key_status_now, const uint8_t *cmp_Keyboard_Last_Key_Status);
 
-// TODO: Move these functions to STM32 specific folder
-/*void SerialPrintUint8(uint8_t data);
-void SerialPrintUint16(uint16_t data);
-void SerialPrintStr(const char* str);
-void SerialPrintUint8Array(const uint8_t* array,uint8_t begin_index,uint16_t size);
-void SerialPrintUint16Array(const uint16_t* array,uint8_t begin_index,uint16_t size);*/
+
 
 uint8_t *MergeUint8Array(uint8_t *source, uint8_t *target);
 
