@@ -17,7 +17,7 @@ uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uin
 
 uint8_t key_status_comp(const uint8_t *cmp_key_status_now, const uint8_t *cmp_Keyboard_Last_Key_Status);
 
-
+uint8_t array_cmp(const uint8_t* arr1, const uint8_t* arr2, uint16_t cmp_size);
 
 uint8_t *MergeUint8Array(uint8_t *source, uint8_t *target);
 
@@ -29,3 +29,4 @@ uint16_t *MergeUint16Array(uint16_t *source, uint16_t *target);
 uint8_t *decode_Uint8reportPack(const uint8_t *reportPack);
 
 uint8_t *decode_Uint16reportPack(const uint16_t *reportPack);
+

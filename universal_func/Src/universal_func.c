@@ -27,7 +27,12 @@ uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uin
     return 0x00;
 }
 
-
+uint8_t array_cmp(const uint8_t* arr1, const uint8_t* arr2, uint16_t cmp_size){
+    for (uint16_t i = 0; i < cmp_size; i++){
+        if (arr1[i] != arr2[i]) return 0x00;
+    }
+    return 0x01;
+}
 
 
 uint8_t *MergeUint8Array(uint8_t *source, uint8_t *target) {
