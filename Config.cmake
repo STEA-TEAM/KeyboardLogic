@@ -1,3 +1,16 @@
+# Build configs
+set(IS_STM32 OFF)
+set(DEBUG ON)
+set(SANITIZER OFF) # Options: OFF, address, leak, thread, undefined, memory
+
+if (${IS_STM32})
+    add_compile_definitions(IS_STM32)
+endif ()
+
+if (${DEBUG})
+    add_compile_definitions(DEBUG)
+endif ()
+
 # RGB led configs
 set(ENABLE_WS2812_DRIVER ON)
 set(ENABLE_KEY_LED ON)

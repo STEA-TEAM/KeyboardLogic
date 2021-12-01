@@ -1,7 +1,27 @@
 #${templateWarning}
+${cmakeRequiredVersion}
+# Project configurations
+include(Config.cmake)
+# Key code definitions
+include(KeyDef.cmake)
+
+if ("$${CMAKE_BUILD_TYPE}" STREQUAL "Release")
+message(STATUS "Maximum optimization for speed")
+add_compile_options(-Ofast)
+elseif ("$${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+message(STATUS "Maximum optimization for speed, debug info included")
+add_compile_options(-Ofast -g)
+elseif ("$${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
+message(STATUS "Maximum optimization for size")
+add_compile_options(-Os)
+else ()
+message(STATUS "Minimal optimization, debug info included")
+add_compile_options(-Og -g)
+endif ()
+
+if ($${IS_STM32})
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_VERSION 1)
-${cmakeRequiredVersion}
 
 # specify cross compilers and tools
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
@@ -32,25 +52,6 @@ add_compile_options(-ffunction-sections -fdata-sections -fno-common -fmessage-le
 # uncomment to mitigate c++17 absolute addresses warnings
 #set(CMAKE_CXX_FLAGS "$${CMAKE_CXX_FLAGS} -Wno-register")
 
-if ("$${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    message(STATUS "Maximum optimization for speed")
-    add_compile_options(-Ofast)
-elseif ("$${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
-    message(STATUS "Maximum optimization for speed, debug info included")
-    add_compile_options(-Ofast -g)
-elseif ("$${CMAKE_BUILD_TYPE}" STREQUAL "MinSizeRel")
-    message(STATUS "Maximum optimization for size")
-    add_compile_options(-Os)
-else ()
-    message(STATUS "Minimal optimization, debug info included")
-    add_compile_options(-Og -g)
-endif ()
-
-# Key code definitions
-include(KeyDef.cmake)
-# Project configurations
-include(Config.cmake)
-
 include_directories(${includes})
 
 add_definitions(${defines})
@@ -65,15 +66,48 @@ add_link_options(-T $${LINKER_SCRIPT})
 
 add_executable($${PROJECT_NAME}.elf $${SOURCES} $${LINKER_SCRIPT})
 
-aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/classes CXX_SRC)
-target_include_directories($${PROJECT_NAME}.elf PUBLIC $${CMAKE_CURRENT_SOURCE_DIR}/classes)
-target_sources($${PROJECT_NAME}.elf PRIVATE $${CXX_SRC})
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Src CDRV_SRC)
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Src KBDL_SRC)
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Src UNIFC_SRC)
+
+target_include_directories($${PROJECT_NAME}.elf PUBLIC
+$${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Inc
+$${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Inc
+$${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Inc)
+
+target_sources($${PROJECT_NAME}.elf PRIVATE
+$${CDRV_SRC}
+$${KBDL_SRC}
+$${UNIFC_SRC})
 
 set(HEX_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.hex)
 set(BIN_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.bin)
 
 add_custom_command(TARGET $${PROJECT_NAME}.elf POST_BUILD
-        COMMAND $${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:$${PROJECT_NAME}.elf> $${HEX_FILE}
-        COMMAND $${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:$${PROJECT_NAME}.elf> $${BIN_FILE}
-        COMMENT "Building $${HEX_FILE}
+COMMAND $${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:$${PROJECT_NAME}.elf> $${HEX_FILE}
+COMMAND $${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:$${PROJECT_NAME}.elf> $${BIN_FILE}
+COMMENT "Building $${HEX_FILE}
 Building $${BIN_FILE}")
+else ()
+# project settings
+project(${projectName} C CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_C_STANDARD 11)
+
+if ($${SANITIZER})
+message(STATUS "Use Google Sanitizer")
+set(CMAKE_C_FLAGS "$${CMAKE_C_FLAGS} -fsanitize=$${SANITIZER} -g")
+set(CMAKE_CXX_FLAGS "$${CMAKE_CXX_FLAGS} -fsanitize=$${SANITIZER} -g")
+endif ()
+
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Src CDRV_SRC)
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Src KBDL_SRC)
+aux_source_directory($${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Src UNIFC_SRC)
+
+add_executable($${PROJECT_NAME} $${CDRV_SRC} $${KBDL_SRC} $${UNIFC_SRC})
+
+target_include_directories($${PROJECT_NAME} PUBLIC
+$${CMAKE_CURRENT_SOURCE_DIR}/custom_driver/Inc
+$${CMAKE_CURRENT_SOURCE_DIR}/keyboard_logic/Inc
+$${CMAKE_CURRENT_SOURCE_DIR}/universal_func/Inc)
+endif ()
