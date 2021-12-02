@@ -17,7 +17,7 @@ uint8_t has_uint8(uint8_t code, const uint8_t *code_list, uint16_t begin, uint16
 
 uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uint16_t end);
 
-uint8_t key_status_comp(const uint8_t *cmp_key_status_now, const uint8_t *cmp_Keyboard_Last_Key_Status);
+uint8_t key_status_cmp(const uint8_t *cmp_key_status_now, const uint8_t *cmp_Keyboard_Last_Key_Status);
 
 uint8_t array_cmp(const uint8_t* arr1, const uint8_t* arr2, uint16_t cmp_size);
 

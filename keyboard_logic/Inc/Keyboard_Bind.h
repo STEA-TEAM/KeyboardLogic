@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #define KEY_BIND_NUMBER 16
+#define KEY_BIND_LAYER 1
 
 extern uint16_t Key_Bind[KEY_BIND_NUMBER];
 

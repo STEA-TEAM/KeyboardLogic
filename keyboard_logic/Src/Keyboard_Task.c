@@ -18,12 +18,13 @@
 #include "Keyboard_WS2812.h"
 #include "WS2812_RGB.h"
 #include "matrix_keyboard.h"
+#include "usbd_custom_hid_if.h"
 
 #endif
 
 void Keyboard_Init() {
 #ifdef IS_STM32
-    //WS2812_Init();
+    WS2812_Init();
     Matrix_Keyboard_Init();
     USB_Keyboard_Send_Init();
     Key_Process_Init();
@@ -69,6 +70,8 @@ uint16_t *Keyboard_Keycode_Process(uint8_t *Key_Pressed_Index,
     //init all_code_list
     all_code_list = All_Code_List_Init();
     //handle Keyboard code in Key_Pressed_Index and add to all_code_list
+    //add Keyboard_WS2812
+    KeyLight(Key_Pressed_Index);
     all_code_list = KeyPress_to_KeyCode(Key_Pressed_Index, all_code_list);
     all_code_list = KeyCode_Remove_Redundent(all_code_list);
     return all_code_list;
@@ -104,11 +107,12 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
 }
 
 void Keyboard_End_Loop() {
-    HAL_Delay(1);
+    HAL_Delay(500);
 }
 
 //Keyboard Logical Loop
 void Keyboard_Logic_Loop() {
+
     uint8_t *Key_Pressed_Index = NULL;
     uint16_t *All_Code = NULL;
 
@@ -124,4 +128,7 @@ void Keyboard_Logic_Loop() {
     free(All_Code);
 
     Keyboard_End_Loop();
+
+
+
 }

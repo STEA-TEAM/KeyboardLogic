@@ -6,7 +6,7 @@ extern SPI_HandleTypeDef hspi2;
 
 SPI_HandleTypeDef hspi_list[WS2812_STRIP_NUM];
 
-uint8_t WS2812_LED_NUM[WS2812_STRIP_NUM] = {12};
+uint8_t WS2812_LED_NUM[WS2812_STRIP_NUM] = {16};
 uint8_t *WS2812_RGB_StatusPtrList[WS2812_STRIP_NUM];
 
 uint8_t WS2812_ValidPosition(WS2812_Position *pos_struct) {
@@ -45,7 +45,7 @@ void WS2812_ResetAll() {
 }
 
 void WS2812_Update() {
-    SerialPrintUint8(0xDD);
+    //SerialPrintUint8(0xDD);
     //SerialPrintUint8Array(WS2812_RGB_StatusPtrList[0],0,48);
     for (uint8_t strip_index = 0; strip_index < WS2812_STRIP_NUM; strip_index++) {
         uint16_t SPI_Data_Len = (WS2812_LED_NUM[strip_index] * 3 + 1) * 8 + 1;
@@ -63,9 +63,9 @@ void WS2812_Update() {
                                                  ? WS2812_H : WS2812_L;
             }
         }
-        SerialPrintUint8(strip_index);
-        SerialPrintUint8(WS2812_LED_NUM[strip_index]);
-        SerialPrintUint16(SPI_Data_Len);
+        //SerialPrintUint8(strip_index);
+        //SerialPrintUint8(WS2812_LED_NUM[strip_index]);
+        //SerialPrintUint16(SPI_Data_Len);
         SPI_Buffer[SPI_Data_Len - 1] = WS2812_L;
         HAL_SPI_Transmit_DMA(&hspi2, SPI_Buffer, SPI_Data_Len);
         HAL_Delay(1);
