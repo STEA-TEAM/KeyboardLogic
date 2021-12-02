@@ -12,8 +12,8 @@ void USB_HID_SendReport(uint8_t *HID_Report) {
     uint8_t total_report = HID_Report[pt];
     pt++;
     for (uint8_t i = 0; i < total_report; i++) {
-//        SerialPrintUint8(0xCC);
-//        SerialPrintUint8Array(HID_Report + pt + 1, 0, HID_Report[pt]);
+        //SerialPrintUint8(0xDD);
+        //SerialPrintUint8Array(HID_Report + pt + 1, 0, HID_Report[pt]);
         USBD_CUSTOM_HID_SendReport_FS(HID_Report + pt + 1, HID_Report[pt]);
         pt += HID_Report[pt] + 1;
     }
@@ -56,19 +56,23 @@ uint8_t* get_Key_Bit_Set(const uint64_t *HSB,
     uint8_t begin_pt = KeyCode_Begin;
     uint8_t* ret = NULL;
     ret = (uint8_t*)malloc(sizeof(uint8_t) * size);
+    uint8_t buf;
     for (uint8_t ct = 0; ct < size; ct++) {
         //ct is ret index
         //this byte is all in HSB
         if (begin_pt + 8 <= 0x40) {
 
-            ret[ct] = (uint8_t)(*HSB >> (0x3F - begin_pt - 7));
+            buf = (uint8_t)(*HSB >> (0x3F - begin_pt - 7));
         } else if (begin_pt >= 0x40) {
             //---dddddddd-----
             //0--bdddddddn---(7f)
-            ret[ct] = (uint8_t)(*LSB >> (0x7F - begin_pt - 7));
+            buf = (uint8_t)(*LSB >> (0x7F - begin_pt - 7));
         } else {
 
-            ret[ct] = (uint8_t)((*HSB << (begin_pt + 7 - 0x3F)) + (*LSB >> (56 + 0x40 - begin_pt)));
+            buf = (uint8_t)((*HSB << (begin_pt + 7 - 0x3F)) + (*LSB >> (56 + 0x40 - begin_pt)));
+        }
+        for (uint8_t i = 0; i < 8; i++){
+            ret[ct] += (uint8_t)(((buf >> (7-i)) & 0b00000001)<<i);
         }
         begin_pt += 8;
     }
@@ -119,7 +123,6 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
     uint8_t *ret = NULL;
     //Just send report when pressed keys changed.
     if (!key_status_cmp(Keyboard_Keycode, Keyboard_Last_Key_Status)) {
-        SerialPrintUint8(0xCC);
 
         /* Handle Assistant Keys
          * assistant keys always update in Default Keyboard Report Byte 2
@@ -219,11 +222,6 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
 
         memcpy(Last_Keyboard_HID_Report, Keyboard_HID_Report, HID_DEFAULT_KEYBOARD_REPORT_SIZE);
         memcpy(LastEX_Keyboard1_HID_Report, EX_Keyboard1_HID_Report, HID_EX_KEYBOARD1_REPORT_SIZE);
-
-//        SerialPrintUint8(0xAA);
-//        SerialPrintUint8Array(Keyboard_HID_Report,0,HID_DEFAULT_KEYBOARD_REPORT_SIZE);
-//        SerialPrintUint8(0xBB);
-//        SerialPrintUint8Array(EX_Keyboard1_HID_Report,0,HID_EX_KEYBOARD1_REPORT_SIZE);
 
         switch (send_mode) {
             //nor changed

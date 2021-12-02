@@ -113,22 +113,26 @@ void Keyboard_End_Loop() {
 //Keyboard Logical Loop
 void Keyboard_Logic_Loop() {
 
-    uint8_t *Key_Pressed_Index = NULL;
-    uint16_t *All_Code = NULL;
-
-    Keyboard_Begin_Loop();
-
-    Key_Pressed_Index = Keyboard_Physical_Detect(Key_Pressed_Index);
-
-    All_Code = Keyboard_Keycode_Process(Key_Pressed_Index, All_Code);
-
-    free(Key_Pressed_Index);
-
-    Keyboard_Report_Send(All_Code);
-    free(All_Code);
-
-    Keyboard_End_Loop();
-
+//    uint8_t *Key_Pressed_Index = NULL;
+//    uint16_t *All_Code = NULL;
+//
+//    Keyboard_Begin_Loop();
+//
+//    Key_Pressed_Index = Keyboard_Physical_Detect(Key_Pressed_Index);
+//
+//    All_Code = Keyboard_Keycode_Process(Key_Pressed_Index, All_Code);
+//
+//    free(Key_Pressed_Index);
+//
+//    Keyboard_Report_Send(All_Code);
+//    free(All_Code);
+//
+//    Keyboard_End_Loop();
+    uint8_t DR1[8] = {0x01,0x04,0x05,0x06,0x07,0x08,0x09,0x0A};
+    uint8_t DR2[8] = {0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
+    uint8_t ER1[15] = {0x02,0x00};
+    uint8_t ER2[15] = {0x02,0x01};
+    uint8_t ER3[15] = {0x02,0x80};
 
 
 }
