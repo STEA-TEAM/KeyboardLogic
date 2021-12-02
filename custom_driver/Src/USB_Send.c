@@ -9,15 +9,13 @@
 
 void USB_HID_SendReport(uint8_t *HID_Report) {
     uint16_t pt = 0;
-    if (HID_Report) {
-        uint8_t total_report = HID_Report[pt];
-        pt++;
-        for (uint8_t i = 0; i < total_report; i++) {
-            SerialPrintUint8(0xCC);
-            SerialPrintUint8Array(HID_Report + pt + 1, 0, HID_Report[pt]);
-            USBD_CUSTOM_HID_SendReport_FS(HID_Report + pt + 1, HID_Report[pt]);
-            pt += HID_Report[pt] + 1;
-        }
+    uint8_t total_report = HID_Report[pt];
+    pt++;
+    for (uint8_t i = 0; i < total_report; i++) {
+        //SerialPrintUint8(0xCC);
+        //SerialPrintUint8Array(HID_Report + pt + 1, 0, HID_Report[pt]);
+        USBD_CUSTOM_HID_SendReport_FS(HID_Report + pt + 1, HID_Report[pt]);
+        pt += HID_Report[pt] + 1;
     }
 }
 
@@ -112,17 +110,12 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
     for (uint8_t i = 1; i <= filter_ret[head]; i++) {
         Keyboard_Keycode[i] = (uint8_t) filter_ret[head + i];
     }
-
     //ret is encoded report array
     uint8_t *ret = NULL;
 
     //Just send report when pressed keys changed.
     if (!key_status_comp(Keyboard_Keycode, Keyboard_Last_Key_Status)) {
 
-        //Update last key status array
-        free(Keyboard_Last_Key_Status);
-        Keyboard_Last_Key_Status = (uint8_t *) malloc(sizeof(uint8_t) * Keyboard_Keycode[0] + 1);
-        memcpy(Keyboard_Last_Key_Status, Keyboard_Keycode, Keyboard_Keycode[0] + 1);
 
         /* Handle Assistant Keys
          * assistant keys always update in Default Keyboard Report Byte 2
@@ -143,7 +136,7 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
         uint8_t new_release_size = 0;
         for (uint8_t i = 1; i <= Keyboard_Last_Key_Status[0]; i++) {
             if (!(elem_find(Keyboard_Last_Key_Status[i], Keyboard_Keycode, Keyboard_Keycode[0] + 1, 1)
-                  | in_range(Keyboard_Last_Key_Status[i], KEYBOARD_LeftControl, KEYBOARD_RightGUI))) {
+                  || in_range(Keyboard_Last_Key_Status[i], KEYBOARD_LeftControl, KEYBOARD_RightGUI))) {
                 new_release[new_release_size] = Keyboard_Last_Key_Status[i];
                 new_release_size++;
             }
@@ -153,13 +146,18 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
         uint8_t new_press_size = 0;
         for (uint8_t i = 1; i <= Keyboard_Keycode[0]; i++) {
             if (!(elem_find(Keyboard_Keycode[i], Keyboard_Last_Key_Status, Keyboard_Last_Key_Status[0] + 1, 1)
-                  | in_range(Keyboard_Last_Key_Status[i], KEYBOARD_LeftControl, KEYBOARD_RightGUI))) {
+                  || in_range(Keyboard_Keycode[i], KEYBOARD_LeftControl, KEYBOARD_RightGUI))) {
                 new_press[new_press_size] = Keyboard_Keycode[i];
                 new_press_size++;
             }
         }
 
-        //clear new_press in Default Keyboard
+        //Update last key status array
+        free(Keyboard_Last_Key_Status);
+        Keyboard_Last_Key_Status = (uint8_t *) malloc(sizeof(uint8_t) * (Keyboard_Keycode[0] + 1));
+        memcpy(Keyboard_Last_Key_Status, Keyboard_Keycode, Keyboard_Keycode[0] + 1);
+
+        //clear new_release in Default Keyboard
         for (uint8_t i = 0; i < new_release_size; i++) {
             uint8_t place = elem_find(new_release[i], Keyboard_HID_Report, HID_DEFAULT_KEYBOARD_REPORT_SIZE, 2);
             if (place) {
@@ -196,6 +194,7 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
                 Key_Bit_Set_Update(&Key_Bit_Set_HSB, &Key_Bit_Set_LSB, new_press[i], 0x01);
             }
         }
+
         //Transform Key_Bit_Set to EX Report
         uint8_t key_bit_set[HID_EX_KEYBOARD1_REPORT_SIZE - 1];
         get_Key_Bit_Set(&Key_Bit_Set_HSB,
@@ -206,24 +205,22 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
         memcpy(EX_Keyboard1_HID_Report + 1, key_bit_set, HID_EX_KEYBOARD1_REPORT_SIZE - 1);
 
 
-
-        SerialPrintUint8Array(Keyboard_HID_Report,0,HID_DEFAULT_KEYBOARD_REPORT_SIZE);
-        SerialPrintUint8Array(Last_Keyboard_HID_Report,0,HID_DEFAULT_KEYBOARD_REPORT_SIZE);
-
         uint8_t send_mode = (array_cmp(Last_Keyboard_HID_Report,
                                        Keyboard_HID_Report,
                                        HID_DEFAULT_KEYBOARD_REPORT_SIZE) << 1)
                             + array_cmp(LastEX_Keyboard1_HID_Report,
                                         EX_Keyboard1_HID_Report,
                                         HID_EX_KEYBOARD1_REPORT_SIZE);
-        SerialPrintUint8(0xDD);
-        SerialPrintUint8(send_mode);
+
+        memcpy(Last_Keyboard_HID_Report, Keyboard_HID_Report, HID_DEFAULT_KEYBOARD_REPORT_SIZE);
+        memcpy(LastEX_Keyboard1_HID_Report, EX_Keyboard1_HID_Report, HID_EX_KEYBOARD1_REPORT_SIZE);
         switch (send_mode) {
             //nor changed
             case 0b00: {
                 ret = (uint8_t *) malloc(sizeof(uint8_t) * 1);
                 ret[0] = 0;
                 return ret;
+                break;
             }
             //only ex report changed
             case 0b01: {
@@ -231,6 +228,7 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
                 ret[0] = 1;
                 ret[1] = HID_EX_KEYBOARD1_REPORT_SIZE;
                 memcpy(ret + 2, EX_Keyboard1_HID_Report, HID_EX_KEYBOARD1_REPORT_SIZE);
+                break;
             }
             //only default report changed
             case 0b10: {
@@ -238,6 +236,7 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
                 ret[0] = 1;
                 ret[1] = HID_DEFAULT_KEYBOARD_REPORT_SIZE;
                 memcpy(ret + 2, Keyboard_HID_Report, HID_DEFAULT_KEYBOARD_REPORT_SIZE);
+                break;
             }
             //both changed
             case 0b11: {
@@ -249,11 +248,13 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
                 memcpy(ret + 2, Keyboard_HID_Report, HID_DEFAULT_KEYBOARD_REPORT_SIZE);
                 memcpy(ret + 3 + HID_DEFAULT_KEYBOARD_REPORT_SIZE, EX_Keyboard1_HID_Report,
                        HID_EX_KEYBOARD1_REPORT_SIZE);
+                break;
             }
             //will this condition appeared?
             default: {
                 ret = (uint8_t *) malloc(sizeof(uint8_t) * 1);
                 ret[0] = 0;
+                break;
             }
         }
         return ret;

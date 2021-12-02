@@ -11,7 +11,9 @@
 
 uint8_t in_range(uint16_t target, uint16_t minimum, uint16_t maximum);
 
-uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, uint8_t begin_find_index);
+uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, uint16_t begin_find_index);
+
+uint8_t has_uint8(uint8_t code, const uint8_t *code_list, uint16_t begin, uint16_t end);
 
 uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uint16_t end);
 

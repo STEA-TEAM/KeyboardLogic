@@ -88,8 +88,7 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
     uint8_t *KeyboardReport = NULL;
 
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
-    SerialPrintUint8(0xAA);
-    SerialPrintUint8Array(KeyboardReport, 0, 9);
+    //SerialPrintUint8(0xAA);
     USB_HID_SendReport(KeyboardReport);
 
     free(KeyboardReport);
@@ -105,7 +104,7 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
 }
 
 void Keyboard_End_Loop() {
-
+    HAL_Delay(1);
 }
 
 //Keyboard Logical Loop

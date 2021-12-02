@@ -12,9 +12,17 @@ uint8_t in_range(uint16_t target, uint16_t minimum, uint16_t maximum) {
     return 0x00;
 }
 
-uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, uint8_t begin_find_index) {
+uint16_t elem_find(uint8_t elem, const uint8_t *source, uint16_t source_size, uint16_t begin_find_index) {
     for (uint16_t i = begin_find_index; i < source_size; i++) {
         if (source[i] == elem) return i + 1;
+    }
+    return 0x00;
+}
+
+uint8_t has_uint8(uint8_t code, const uint8_t *code_list, uint16_t begin, uint16_t end) {
+    //size of code_list is in code_list[0], so i begin with 1
+    for (uint16_t i = begin; i < end; i++) {
+        if (code_list[i] == code) return 0x01;
     }
     return 0x00;
 }
@@ -29,9 +37,9 @@ uint8_t has_uint16(uint16_t code, const uint16_t *code_list, uint16_t begin, uin
 
 uint8_t array_cmp(const uint8_t* arr1, const uint8_t* arr2, uint16_t cmp_size){
     for (uint16_t i = 0; i < cmp_size; i++){
-        if (arr1[i] != arr2[i]) return 0x00;
+        if (arr1[i] != arr2[i]) return 0x01;
     }
-    return 0x01;
+    return 0x00;
 }
 
 
