@@ -24,14 +24,14 @@ uint16_t *KeyPress_to_KeyCode(const uint8_t *Key_Pressed_Index, uint16_t *all_co
 
     uint8_t keycode_list_count = 0;
     for (uint8_t i = 1; i <= Key_Pressed_Index[0]; i++) {
-        keycode_list_count += (Key_Bind[Key_Pressed_Index[i]] <= MACRO_CODE_MINIMUM ||
-                               Key_Bind[Key_Pressed_Index[i]] >= MACRO_CODE_MAXIMUM);
+        keycode_list_count += (Key_Bind[now_layer][Key_Pressed_Index[i]] <= MACRO_CODE_MINIMUM ||
+                               Key_Bind[now_layer][Key_Pressed_Index[i]] >= MACRO_CODE_MAXIMUM);
     }
     uint16_t *keycode_list = (uint16_t *) malloc(sizeof(uint16_t) * (keycode_list_count + 1));
     keycode_list[0] = keycode_list_count;
 
     for (uint8_t i = 1; i <= Key_Pressed_Index[0]; i++) {
-        keycode_list[i] = Key_Bind[Key_Pressed_Index[i]];
+        keycode_list[i] = Key_Bind[now_layer][Key_Pressed_Index[i]];
     }
     all_code_list = MergeUint16Array(keycode_list, all_code_list);
     return all_code_list;
