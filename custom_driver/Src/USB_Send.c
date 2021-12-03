@@ -15,6 +15,8 @@ void USB_HID_SendReport(uint8_t *HID_Report) {
         //SerialPrintUint8(0xDD);
         //SerialPrintUint8Array(HID_Report + pt + 1, 0, HID_Report[pt]);
         USBD_CUSTOM_HID_SendReport_FS(HID_Report + pt + 1, HID_Report[pt]);
+        for (uint16_t t = 0; t < 5000; t ++);
+        __NOP();
         pt += HID_Report[pt] + 1;
     }
 }
@@ -36,6 +38,8 @@ uint64_t Key_Bit_Set_HSB = 0;
 uint64_t Key_Bit_Set_LSB = 0;
 uint64_t Key_Bit_Set_Mask = 0x7FFFFFFFFFFFFFFF; //0b0111...111 (64bit)
 
+uint16_t kct = 0;
+
 void Key_Bit_Set_Update(uint64_t *HSB,
                         uint64_t *LSB,
                         uint8_t key_code,
@@ -55,7 +59,7 @@ uint8_t* get_Key_Bit_Set(const uint64_t *HSB,
                      uint8_t size) {
     uint8_t begin_pt = KeyCode_Begin;
     uint8_t* ret = NULL;
-    ret = (uint8_t*)malloc(sizeof(uint8_t) * size);
+    ret = (uint8_t*)calloc(sizeof(uint8_t) , size);
     uint8_t buf;
     for (uint8_t ct = 0; ct < size; ct++) {
         //ct is ret index
@@ -123,7 +127,9 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
     uint8_t *ret = NULL;
     //Just send report when pressed keys changed.
     if (!key_status_cmp(Keyboard_Keycode, Keyboard_Last_Key_Status)) {
-
+        kct++;
+        //SerialPrintUint8(0xBB);
+        //SerialPrintUint16(kct);
         /* Handle Assistant Keys
          * assistant keys always update in Default Keyboard Report Byte 2
          * assistant keys will never in new_release and new_press
@@ -133,9 +139,7 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
                 Keyboard_HID_Report[1] |= 0b10000000 >> (Keyboard_Keycode[i] - 0xE0);
             }
         }
-
         //find new_press and new_release
-
         uint8_t new_press[Keyboard_Keycode[0]];
         uint8_t new_release[Keyboard_Last_Key_Status[0]];
 
@@ -205,13 +209,12 @@ uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head)
 
         //Transform Key_Bit_Set to EX Report
         uint8_t* key_bit_set = NULL;
-        key_bit_set = (uint8_t*)malloc(sizeof(uint8_t) * (HID_EX_KEYBOARD1_REPORT_SIZE - 1));
         key_bit_set = get_Key_Bit_Set(&Key_Bit_Set_HSB,
                                     &Key_Bit_Set_LSB,
                                     0x04,
                                     HID_EX_KEYBOARD1_REPORT_SIZE - 1);
         memcpy(EX_Keyboard1_HID_Report + 1, key_bit_set, HID_EX_KEYBOARD1_REPORT_SIZE - 1);
-
+        free(key_bit_set);
 
         uint8_t send_mode = (array_cmp(Last_Keyboard_HID_Report,
                                        Keyboard_HID_Report,
