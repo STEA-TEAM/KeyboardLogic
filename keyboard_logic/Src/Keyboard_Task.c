@@ -19,7 +19,7 @@
 #include "WS2812_RGB.h"
 #include "matrix_keyboard.h"
 #include "usbd_custom_hid_if.h"
-
+#include "USB_receive.h"
 #endif
 
 void Keyboard_Init() {
@@ -138,13 +138,6 @@ void Keyboard_Logic_Loop() {
     Keyboard_Report_Send(All_Code);
     free(All_Code);
     Keyboard_End_Loop();
-
-
-//    uint8_t DR1[8] = {0x01,0x04,0x05,0x06,0x07,0x08,0x09,0x0A};
-//    uint8_t DR2[8] = {0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-//    uint8_t ER1[15] = {0x02,0x00};
-//    uint8_t ER2[15] = {0x02,0x01};
-//    uint8_t ER3[15] = {0x02,0x80};
 
 
 }

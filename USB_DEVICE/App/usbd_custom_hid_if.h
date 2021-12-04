@@ -92,7 +92,7 @@
 extern USBD_CUSTOM_HID_ItfTypeDef USBD_CustomHID_fops_FS;
 
 /* USER CODE BEGIN EXPORTED_VARIABLES */
-
+extern uint8_t HID_OutCompleteFlag;
 /* USER CODE END EXPORTED_VARIABLES */
 
 /**

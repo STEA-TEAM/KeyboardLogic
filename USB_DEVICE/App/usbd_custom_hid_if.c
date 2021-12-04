@@ -32,7 +32,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-
+uint8_t HID_OutCompleteFlag;
 /* USER CODE END PV */
 
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
@@ -302,11 +302,11 @@ static int8_t CUSTOM_HID_DeInit_FS(void)
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
 
-static int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
+int8_t CUSTOM_HID_OutEvent_FS(uint8_t event_idx, uint8_t state)
 {
   /* USER CODE BEGIN 6 */
-	//HID_OutCompleteFlag = 1;
-  return (USBD_OK);
+    HID_OutCompleteFlag = 1;
+    return (USBD_OK);
   /* USER CODE END 6 */
 }
 
