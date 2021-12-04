@@ -30,5 +30,5 @@ uint16_t *MergeUint16Array(uint16_t *source, uint16_t *target);
 
 uint8_t *decode_Uint8reportPack(const uint8_t *reportPack);
 
-uint8_t *decode_Uint16reportPack(const uint16_t *reportPack);
+uint16_t *decode_Uint16reportPack(const uint16_t *reportPack);
 

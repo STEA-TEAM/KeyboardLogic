@@ -105,11 +105,11 @@ uint8_t *decode_Uint8reportPack(const uint8_t *reportPack) {
     return ret;
 }
 
-uint8_t *decode_Uint16reportPack(const uint16_t *reportPack) {
-    uint8_t *ret = (uint8_t *) malloc(sizeof(uint8_t) * (reportPack[0] + 1));
+uint16_t *decode_Uint16reportPack(const uint16_t *reportPack) {
+    uint16_t *ret = (uint16_t *) malloc(sizeof(uint16_t) * (reportPack[0] + 1));
     ret[0] = reportPack[0];
     uint16_t pt = 1;
-    for (uint8_t i = 1; i <= reportPack[0]; i++) {
+    for (uint16_t i = 1; i <= reportPack[0]; i++) {
         ret[i] = pt;
         pt += 1 + reportPack[pt];
     }

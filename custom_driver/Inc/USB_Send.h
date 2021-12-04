@@ -33,7 +33,7 @@
 
 void USB_HID_SendReport(uint8_t *report);
 
-uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head);
+uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint16_t head);
 
 void USB_Keyboard_Send_Init();
 

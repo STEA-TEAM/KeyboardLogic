@@ -68,12 +68,30 @@ uint16_t *Keyboard_Keycode_Process(uint8_t *Key_Pressed_Index,
     //all_code_list is NULL
 
     //init all_code_list
+
     all_code_list = All_Code_List_Init();
     //handle Keyboard code in Key_Pressed_Index and add to all_code_list
     //add Keyboard_WS2812
     KeyLight(Key_Pressed_Index);
-    all_code_list = KeyPress_to_KeyCode(Key_Pressed_Index, all_code_list);
+
+
+    uint8_t* filter_ret = NULL;
+    filter_ret = Key_Pressed_Index_Filter(Key_Pressed_Index);
+
+    uint8_t* filter_head = NULL;
+    filter_head = decode_Uint8reportPack(filter_ret);
+//    SerialPrintUint8(0xCC);
+//    SerialPrintUint8Array(filter_ret,0,16);
+//    SerialPrintUint8(0xDD);
+//    SerialPrintUint8Array(filter_head,0,3);
+    sysctl_command_handle(filter_ret,filter_head[1+0]);
+
+    all_code_list = KeyPress_to_KeyCode2(filter_ret, filter_head[1+1], all_code_list);
+
+    free(filter_ret);
+    free(filter_head);
     all_code_list = KeyCode_Remove_Redundent(all_code_list);
+
     return all_code_list;
 }
 
@@ -83,17 +101,13 @@ void Keyboard_Report_Send(uint16_t *all_code_list) {
     filter_ret = Keycode_Filter(all_code_list);
     //decode filter array to each kind of keycode header index
     //report_head[6] is {5,kbd,ms,cc,sc,rhid}
-
 #ifdef IS_STM32
-    uint8_t *report_head = NULL;
+    uint16_t *report_head = NULL;
     report_head = decode_Uint16reportPack(filter_ret);
     //handle Keyboard Report;
     uint8_t *KeyboardReport = NULL;
-
     KeyboardReport = USB_HID_Keyboard_Code_Process(filter_ret, report_head[1]);
-    //SerialPrintUint8(0xAA);
     USB_HID_SendReport(KeyboardReport);
-
     free(KeyboardReport);
     free(report_head);
 #else
@@ -115,18 +129,14 @@ void Keyboard_Logic_Loop() {
 
     uint8_t *Key_Pressed_Index = NULL;
     uint16_t *All_Code = NULL;
-
     Keyboard_Begin_Loop();
 
     Key_Pressed_Index = Keyboard_Physical_Detect(Key_Pressed_Index);
 
     All_Code = Keyboard_Keycode_Process(Key_Pressed_Index, All_Code);
-
     free(Key_Pressed_Index);
-
     Keyboard_Report_Send(All_Code);
     free(All_Code);
-
     Keyboard_End_Loop();
 
 

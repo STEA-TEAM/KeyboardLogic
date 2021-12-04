@@ -115,12 +115,12 @@ void USB_Keyboard_Send_Init() {
 }
 
 
-uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint8_t head) {
+uint8_t *USB_HID_Keyboard_Code_Process(const uint16_t *filter_ret, uint16_t head) {
 
     //get Keyboard's keycode array from filter_ret
     uint8_t Keyboard_Keycode[filter_ret[head] + 1];
-    Keyboard_Keycode[0] = filter_ret[head];
-    for (uint8_t i = 1; i <= filter_ret[head]; i++) {
+    Keyboard_Keycode[0] = (uint8_t)filter_ret[head];
+    for (uint16_t i = 1; i <= filter_ret[head]; i++) {
         Keyboard_Keycode[i] = (uint8_t) filter_ret[head + i];
     }
     //ret is encoded report array
