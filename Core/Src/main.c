@@ -129,7 +129,7 @@ int main(void) {
     /* USER CODE BEGIN WHILE */
     while (1) {
         /* USER CODE END WHILE */
-        /* just for a commit */
+
         /* USER CODE BEGIN 3 */
         Keyboard_Logic_Loop();
         //HAL_Delay(1);
