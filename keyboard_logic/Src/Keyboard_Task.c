@@ -14,12 +14,12 @@
 
 #ifdef IS_STM32
 //include hardware drivers
-#include "USB_Send.h"
+#include "USB_HID_Send.h"
 #include "Keyboard_WS2812.h"
-#include "WS2812_RGB.h"
-#include "matrix_keyboard.h"
+#include "RGB_WS2812_SPI.h"
+#include "KeyScan_Matrix.h"
 #include "usbd_custom_hid_if.h"
-#include "USB_receive.h"
+#include "USB_HID_Receive.h"
 #endif
 
 void Keyboard_Init() {
@@ -138,6 +138,10 @@ void Keyboard_Logic_Loop() {
     Keyboard_Report_Send(All_Code);
     free(All_Code);
     Keyboard_End_Loop();
-
+//    SerialPrintUint8(0xAA);
+//    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,0x00);
+//    HAL_Delay(500);
+//    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_10,0x01);
+//    HAL_Delay(500);
 
 }

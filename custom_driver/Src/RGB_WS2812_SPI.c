@@ -1,6 +1,6 @@
 #include <malloc.h>
 #include "main.h"
-#include "WS2812_RGB.h"
+#include "RGB_WS2812_SPI.h"
 
 extern SPI_HandleTypeDef hspi2;
 

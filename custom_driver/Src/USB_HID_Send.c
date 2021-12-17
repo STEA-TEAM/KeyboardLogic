@@ -2,7 +2,7 @@
 // Created by CafuuChino on 2021/12/1.
 //
 
-#include "USB_Send.h"
+#include "USB_HID_Send.h"
 #include "universal_func.h"
 #include "main.h"
 #include "usbd_custom_hid_if.h"

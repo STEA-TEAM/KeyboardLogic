@@ -12,15 +12,32 @@
 #include "main.h"
 #include "universal_func.h"
 //include functional header
-#include "matrix_keyboard.h"
-#include "matrix_conf.h"
+#include "hardware_structure_define.h"
+#include "KeyScan_Matrix.h"
 
 //def global array
 uint8_t Key_Status[JITTER_SCAN_FRAME + 1][SCAN_OUTPUT_NUM * SCAN_INPUT_NUM] = {};
+
 //def global counter
 uint8_t Key_Pressed_Count = 0;
+
 uint8_t last_frame = 0;
 uint8_t now_frame = 0;
+
+/* Key Matrix GPIO Setting*/
+GPIO_Package Scan_InputGPIO[SCAN_INPUT_NUM] = {
+        {GPIOA, GPIO_PIN_0},
+        {GPIOA, GPIO_PIN_1},
+        {GPIOA, GPIO_PIN_2},
+        {GPIOA, GPIO_PIN_3}
+};
+GPIO_Package Scan_OutputGPIO[SCAN_OUTPUT_NUM] = {
+        {GPIOA, GPIO_PIN_8},
+        {GPIOC, GPIO_PIN_15},
+        {GPIOC, GPIO_PIN_13},
+        {GPIOB, GPIO_PIN_10}
+};
+
 
 void Matrix_Keyboard_Init() {
     //Zero key status

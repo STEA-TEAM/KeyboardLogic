@@ -10,15 +10,16 @@
 
 #include "stm32f1xx_hal.h"
 
+#define WS2812_STRIP_NUM 1
+
+extern uint8_t *WS2812_RGB_StatusPtrList[WS2812_STRIP_NUM];
+extern uint8_t WS2812_LED_NUM[WS2812_STRIP_NUM];
+extern SPI_HandleTypeDef *WS2812_SPI_Conf[WS2812_STRIP_NUM];
+
 typedef struct {
     uint8_t strip_index;
     uint8_t led_addr;
 } WS2812_Position;
-
-#define WS2812_STRIP_NUM 1
-extern uint8_t *WS2812_RGB_StatusPtrList[WS2812_STRIP_NUM];
-extern uint8_t WS2812_LED_NUM[WS2812_STRIP_NUM];
-extern SPI_HandleTypeDef *WS2812_SPI_Conf[WS2812_STRIP_NUM];
 
 void WS2812_Init();
 

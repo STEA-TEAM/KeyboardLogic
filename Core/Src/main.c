@@ -25,8 +25,9 @@
 /* USER CODE BEGIN Includes */
 //#include "USB_Keyboard_Send.h"
 #include "Keyboard_Task.h"
-#include "WS2812_RGB.h"
+#include "RGB_WS2812_SPI.h"
 #include "Keyboard_WS2812.h"
+#include "SerialPrint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -114,24 +115,15 @@ int main(void) {
     MX_SPI2_Init();
     /* USER CODE BEGIN 2 */
     Keyboard_Init();
-
-    //uint32_t ct = 0;
-    uint8_t uct[4];
-
-    //WS2812_Position led_addr = {0, 1};
-    //HAL_UART_Transmit(&huart1,"star",5,0xFFFF);HAL_Delay(1);
     /* USER CODE END 2 */
-    uint16_t ct = 0;
-    //uint8_t* t;
-    //t = (uint8_t*)malloc(sizeof(uint8_t) * 8133);
-    //if (t == NULL) HAL_UART_Transmit(&huart1,"false",6,0xFF);
+
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
     while (1) {
         /* USER CODE END WHILE */
-
         /* USER CODE BEGIN 3 */
         Keyboard_Logic_Loop();
+
         //HAL_Delay(1);
     }
     /* USER CODE END 3 */

@@ -8,13 +8,19 @@
 #ifndef INC_MATRIX_KEYBOARD_H_
 #define INC_MATRIX_KEYBOARD_H_
 
-#include "matrix_conf.h"
-//#define SCAN_INTERVAL 1U
+#include "hardware_structure_define.h"
 
+
+
+#define SCAN_INPUT_NUM 4
+#define SCAN_OUTPUT_NUM 4
+
+//#define SCAN_INTERVAL 1U
 #define JITTER_SCAN_FRAME 1U //do not set a large number!Jitter Time is in FRAME Unit, Per Frame Time is SCAN_INVERVAL(ms)
 
+
+
 extern uint8_t Key_Status[JITTER_SCAN_FRAME + 1][SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
-extern uint8_t Key_Pressed[SCAN_OUTPUT_NUM * SCAN_INPUT_NUM];
 
 extern uint8_t last_frame;
 extern uint8_t now_frame;

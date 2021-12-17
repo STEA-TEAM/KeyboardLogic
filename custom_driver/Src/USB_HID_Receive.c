@@ -2,7 +2,7 @@
 // Created by CafuuChino on 2021/12/4.
 //
 
-#include "USB_receive.h"
+#include "USB_HID_Receive.h"
 
 USBD_CUSTOM_HID_HandleTypeDef *hhid;
 
